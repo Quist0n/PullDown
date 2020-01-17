@@ -18,6 +18,10 @@ function single-con()
 	youtube-dl -vv "$2" -o "$3";
 };
 
+function default_job() 
+{
+	youtube-dl -vv "$1";
+}
 
 if [ "$MODE" == "--normal" ] || [ "$MODE" == "-n" ]
 	then
@@ -42,6 +46,6 @@ elif [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
 	echo "(e.g $0 -p [Number of connections] [URL])";
 	echo "-sc | --single-con 				Downloads the file and writes it to [FILE], for use where multiple connections cannot be used";
 	echo "(e.g $0 -sc [URL] [Renamed file name])";
-else 
-	echo "Usage: $0 [MODE] [URL]";
+else 	
+	default_job "$@";
 fi 
