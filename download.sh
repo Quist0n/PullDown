@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=0.6.1
+VERSION=0.6.2
 MODE=$1
 
 function normal_mode()
@@ -15,7 +15,7 @@ function playlist()
 
 function single-con()
 {
-	youtube-dl -vv --hls-prefer-native "$2" -o "$3";
+	youtube-dl -vv "$2" -o "$3";
 };
 
 function default_job() 
@@ -48,6 +48,9 @@ elif [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
 	echo "(e.g $0 -p [Number of connections] [URL])";
 	echo "-s | --single-con 				Downloads the file and writes it to [FILE], for use where multiple connections cannot be used";
 	echo "(e.g $0 -sc [URL] [Renamed file name])";
+	echo "\n";
+	echo "If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the
+	script.";
 else 	
 	default_job "$@";
 fi 
