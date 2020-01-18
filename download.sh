@@ -15,7 +15,7 @@ function playlist()
 
 function single-con()
 {
-	youtube-dl -vv "$2" -o "$3";
+	youtube-dl -vv --hls-prefer-native "$2" -o "$3";
 };
 
 function default_job() 
