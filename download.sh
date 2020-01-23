@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=0.6.4
+VERSION=0.6.4.1
 MODE=$1
 
 function normal_mode()
@@ -10,7 +10,7 @@ function normal_mode()
 
 function playlist()
 {
-	youtube-dl -vv --external-downloader axel --external-downloader-args "-n $2 -a" "$3" -o "%(autonumber)s - %(title)s.%(ext)s";
+	youtube-dl -vv --external-downloader axel --external-downloader-args "-n $2 -a" "$3" -o "%(autonumber)s-%(title)s.%(ext)s";
 };
 
 function single-con()
