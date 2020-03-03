@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 
-VERSION=0.6.4.2
+VERSION=0.6.4.3
 MODE=$1
 
 function normal_mode()
 {
- 	youtube-dl -vv --external-downloader axel --external-downloader-args "-n $2 -a" "$3" -o "$4";
+ 	youtube-dl -v --external-downloader axel --external-downloader-args "-n $2 -a" "$3" -o "$4";
 };
 
 function playlist()
 {
-	youtube-dl -vv --external-downloader axel --external-downloader-args "-n $2 -a" "$3" -o "%(autonumber)s-%(title)s.%(ext)s";
+	youtube-dl -v --external-downloader axel --external-downloader-args "-n $2 -a" "$3" -o "%(autonumber)s-%(title)s.%(ext)s";
 };
 
 function single-con()
 {
-	youtube-dl -vv --hls-prefer-native "$2" -o "$3";
+	youtube-dl -v --hls-prefer-native "$2" -o "$3";
 };
 
 function default_job() 
 {
-	youtube-dl -vv "$1";
+	youtube-dl -v "$1";
 }
 
 if [ "$MODE" == "--normal" ] || [ "$MODE" == "-n" ]
