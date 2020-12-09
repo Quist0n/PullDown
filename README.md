@@ -1,2 +1,2 @@
 # PullDown
-Bash script using youtube-dl and  axel to download remote files 
+Bash script using youtube-dl to download remote files. 

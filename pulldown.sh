@@ -1,21 +1,21 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 VERSION=0.6.4.3
 MODE=$1
 
 function normal_mode()
 {
- 	youtube-dl -v --external-downloader axel --external-downloader-args "-n $2 -a" "$3" -o "$4";
+ 	youtube-dl -v  "$1" -o "$2";
 };
 
 function playlist()
 {
-	youtube-dl -v --external-downloader axel --external-downloader-args "-n $2 -a" "$3" -o "%(autonumber)s-%(title)s.%(ext)s";
+	youtube-dl -v "$1" -o "%(autonumber)s-%(title)s.%(ext)s";
 };
 
-function single-con()
+function native_hls()
 {
-	youtube-dl -v --hls-prefer-native "$2" -o "$3";
+	youtube-dl -v --hls-prefer-native "$1" -o "$2";
 };
 
 function default_job() 
@@ -25,28 +25,28 @@ function default_job()
 
 if [ "$MODE" == "--normal" ] || [ "$MODE" == "-n" ]
 	then
-	normal_mode "$@";
+	normal_mode "$2" "$3";
 
-elif [ "$MODE" == "--single-con" ] || [ "$MODE" == "-s" ];
+elif [ "$MODE" == "--native-hls" ] || [ "$MODE" == "-s" ] || [ "$MODE" == "-hls"];
 	then
-	single-con "$@";
+	native_hls "$2" "$3";
 
 elif [ "$MODE" == "--playlist" ] || [ "$MODE" == "-p" ];
 	then 
-	playlist "$@";
+	playlist "$2";
 
 elif [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
 	then
-	echo "Usage : $0 [MODE] [URL]";
+	echo "Usage : $0 [MODE] URL [FILE]";
 	echo "Invoking the script without a mode set will just invoke youtube-dl with debug output enabled pointed to download the url you
 	specified. This can also allow you to pass youtube-dl options in, but this is untested, but SEEMS to work";
 	echo "Modes:";
-	echo "-n | --normal					Downloads file using axel with N number of connections and writes file to [FILE]";
-	echo "(e.g $0 -n [Number of connections] [URL] [FILE])";
-	echo "-p | --playlist				Downloads a youtube playlist or other playlist supported by youtube-dl using axel to current working directory
-	using N number of connections";
-	echo "(e.g $0 -p [Number of connections] [URL])";
-	echo "-s | --single-con 				Downloads the file and writes it to [FILE], for use where multiple connections cannot be used";
+	echo "-n | --normal					Downloads file using axel directed to to [FILE] or the default file name";
+	echo "(e.g $0 -n  [URL] [FILE])";
+	echo "-p | --playlist				Downloads a youtube playlist or other playlist supported by youtube-dl using axel to current working directory";
+	echo "(e.g $0 -p [URL])";
+	echo "-s | -hls |--native-hls 				Downloads the file and writes it to [FILE] or the default file name, for use where the axel
+    downloader cannot be used";
 	echo "(e.g $0 -sc [URL] [Renamed file name])";
 	echo "";
 	echo "If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the
