@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=0.6.4.3
+VERSION=0.6.5.0
 MODE=$1
 
 function normal_mode()
