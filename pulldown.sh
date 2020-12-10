@@ -27,7 +27,7 @@ if [ "$MODE" == "--normal" ] || [ "$MODE" == "-n" ]
 	then
 	normal_mode "$2" "$3";
 
-elif [ "$MODE" == "--native-hls" ] || [ "$MODE" == "-s" ] || [ "$MODE" == "-hls"];
+elif [ "$MODE" == "--native-hls" ] || [ "$MODE" == "-s" ] || [ "$MODE" == "-hls" ];
 	then
 	native_hls "$2" "$3";
 
