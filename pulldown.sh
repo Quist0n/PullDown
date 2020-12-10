@@ -20,7 +20,7 @@ function native_hls()
 
 function default_job() 
 {
-	youtube-dl -v "$1";
+	youtube-dl -v "$@";
 }
 
 if [ "$MODE" == "--normal" ] || [ "$MODE" == "-n" ]
