@@ -1,11 +1,11 @@
 #!/bin/bash
 
-VERSION=0.6.5.0
+VERSION=0.6.5.1
 MODE=$1
 
 function normal_mode()
 {
- 	youtube-dl -v  "$1" -o "$2";
+ 	youtube-dl -v  --external-downloader axel "$1" -o "$2";
 };
 
 function playlist()
@@ -43,7 +43,7 @@ elif [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
 	echo "Modes:";
 	echo "-n | --normal					Downloads file using axel directed to to [FILE] or the default file name";
 	echo "(e.g $0 -n  [URL] [FILE])";
-	echo "-p | --playlist				Downloads a youtube playlist or other playlist supported by youtube-dl using axel to current working directory";
+	echo "-p | --playlist				Downloads a youtube playlist or other playlist supported by youtube-dl to current working directory";
 	echo "(e.g $0 -p [URL])";
 	echo "-s | -hls |--native-hls 				Downloads the file and writes it to [FILE] or the default file name, for use where the axel
     downloader cannot be used";
