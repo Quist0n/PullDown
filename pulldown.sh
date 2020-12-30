@@ -1,27 +1,30 @@
 #!/bin/bash
 
-VERSION=0.6.5.2
+VERSION=0.6.5.3
 MODE=$1
 NAME="pulldown.sh"
+OUTPUT_FORMAT="%(autonumber)s-%(title)s.%(ext)s"
 
 function normal_mode()
 {
- 	youtube-dl -v --add-metadata --external-downloader axel "$1" -o "$2";
+        [ "$2" == "" ] && youtube-dl -v --add-metadata --external-downloader axel "$1" -o $OUTPUT_FORMAT && exit;
+        [ "$2" != "" ] && youtube-dl -v --add-metadata --external-downloader axel "$1" -o "$2.%(ext)s" && exit;
 };
 
 function playlist()
 {
-	youtube-dl -v "${@:2}" --add-metadata "$1" -o "%(autonumber)s-%(title)s.%(ext)s";
+	youtube-dl -v "${@:2}" --add-metadata "$1" -o $OUTPUT_FORMAT;
 };
 
 function audio_job()
 {
-        youtube-dl -v -x "${@:2}" --add-metadata "$1" -o "%(autonumber)s-%(title)s.%(ext)s";
+        youtube-dl -v -x "${@:2}" --add-metadata "$1" -o $OUTPUT_FORMAT;
 };
 
 function native_hls()
 {
-	youtube-dl -v --add-matadata --hls-prefer-native  "$1" -o "$2";
+        [ "$2" == "" ] && youtube-dl -v --add-metadata --hls-prefer-native "$1" -o $OUTPUT_FORMAT && exit;
+        [ "$2" != "" ] && youtube-dl -v --add-metadata --hls-prefer-native "$1" -o "$2.%(ext)s" && exit;
 };
 
 function default_job() 
