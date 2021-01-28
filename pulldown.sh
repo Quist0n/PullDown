@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=0.7.1
+VERSION=0.7.2
 MODE=$1
 NAME="pulldown.sh"
 OUTPUT_FORMAT_PLAYLIST="\%\(autonumber\)s-\%\(title\)s.\%\(ext\)s"
