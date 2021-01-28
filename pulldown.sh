@@ -1,82 +1,55 @@
 #!/bin/bash
 
-VERSION=0.6.5.3
+VERSION=0.7
 MODE=$1
 NAME="pulldown.sh"
-OUTPUT_FORMAT="%(autonumber)s-%(title)s.%(ext)s"
+OUTPUT_FORMAT_PLAYLIST="\%\(autonumber\)s-\%\(title\)s.\%\(ext\)s"
+OUTPUT_FORMAT_NORMAL="\%\(title\)s.\%\(ext\)s"
+ARGS="-v --add-metadata "
+EXTRA_ARGS="$3"
 
-function normal_mode()
-{
-        [ "$2" == "" ] && youtube-dl -v --add-metadata --external-downloader axel "$1" -o $OUTPUT_FORMAT && exit;
-        [ "$2" != "" ] && youtube-dl -v --add-metadata --external-downloader axel "$1" -o "$2.%(ext)s" && exit;
-};
-
-function playlist()
-{
-	youtube-dl -v "${@:2}" --add-metadata "$1" -o $OUTPUT_FORMAT;
-};
-
-function audio_job()
-{
-        youtube-dl -v -x "${@:2}" --add-metadata "$1" -o $OUTPUT_FORMAT;
-};
-
-function native_hls()
-{
-        [ "$2" == "" ] && youtube-dl -v --add-metadata --hls-prefer-native "$1" -o $OUTPUT_FORMAT && exit;
-        [ "$2" != "" ] && youtube-dl -v --add-metadata --hls-prefer-native "$1" -o "$2.%(ext)s" && exit;
-};
-
-function default_job() 
-{
-	youtube-dl -v "$@";
-};
-
-
-if [ "$MODE" == "--normal" ] || [ "$MODE" == "-n" ]
+if [ "$MODE" == "--normal" ] || [[ "$MODE" == "-"*"n"* ]];
 	then
-	normal_mode "$2" "$3";
+    ARGS="${ARGS} -o $OUTPUT_FORMAT_NORMAL"; 
+fi
 
-elif [ "$MODE" == "--native-hls" ] || [ "$MODE" == "-s" ] || [ "$MODE" == "--hls" ];
+if [ "$MODE" == "--native-hls" ] || [[ "$MODE" == "-"*"s"* ]] || [ "$MODE" == "--hls" ];
 	then
-	native_hls "$2" "$3";
+    ARGS="${ARGS} --hls-prefer-native ";
+fi
 
-elif [ "$MODE" == "--playlist" ] || [ "$MODE" == "-p" ];
+if [ "$MODE" == "--playlist" ] || [[ "$MODE" == "-p"* ]] || [[ "$MODE" == *"p" ]];
 	then 
-	playlist "$2" "${@:3}";
-elif [ "$MODE" == "--audio" ] || [ "$MODE" == "-a" ];
+    ARGS="${ARGS} -o $OUTPUT_FORMAT_PLAYLIST ";
+fi
+
+if [ "$MODE" == "--audio" ] || [[ "$MODE" == "-"*"a"* ]];
     then
-    audio_job "$2" "${@:3}";
-elif [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
+    ARGS="${ARGS} -x ";
+fi
+
+if [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
 	then
-    echo "PullDown $VERSION";
-	echo "Usage : $NAME [MODE] URL [FILE]";
-	echo "Invoking the script without a mode set will just invoke youtube-dl with debug output enabled pointed to download the url you
-	specified. This can also allow you to pass youtube-dl
-    options in, but this is untested, but SEEMS to work.";
+    echo -e "PullDown $VERSION";
+	echo -e "Usage : $NAME [MODE] URL [OPTIONS]";
 
-	echo "Modes:";
-	echo "-n | --normal					Downloads file using axel directed to [FILE] or the default file name";
-	echo "(e.g $NAME -n  [URL] [FILE])";
+	echo -e "Modes:";
 
-	echo "-p | --playlist				Downloads a youtube playlist or other playlist supported by youtube-dl to current working directory
-    with a output format set to number all downloads. You can pass youtube-dl options to this mode but don't use -o in your options as it would
-    conflict with the -o already used";
-	echo "(e.g $NAME -p URL [OPTIONS])";
+	echo -e "-n | --normal\n\tDownloads file giving the file its name via the template $OUTPUT_FORMAT_NORMAL variable";
+	echo -e "(e.g $NAME -n  [URL] [OPTIONS])";
 
-	echo "-a | --audio				Downloads audio to current working directory
-    with a output format set to number all downloads. You can pass youtube-dl options to this mode but don't use -o in your options as it would
-    conflict with the -o already used. This one is almost the
-    same as the playlist mode but simply prevents video from
-    being downloaded.";
-    echo "(e.g $NAME -a URL [OPTIONS])"
+	echo -e "-p | --playlist\n\tDownloads a youtube playlist or other playlist supported by youtube-dl to current working directory using template $OUTPUT_FORMAT_PLAYLIST";
+	echo -e "(e.g $NAME -p URL [OPTIONS])";
 
-	echo "-s | --hls |--native-hls 				Downloads the file and writes it to [FILE] or the default file name, for use where the axel
-    downloader cannot be used";
-	echo "(e.g $NAME -s URL [FILE])";
+	echo -e "-a | --audio\n\tDownloads audio only.";
+    echo -e "(e.g $NAME -a URL [OPTIONS])"
 
-	echo "If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the
+	echo -e "-s | --hls |--native-hls\n\tDownloads the file with the youtube-dl native HLS downloader";
+	echo -e "(e.g $NAME -s URL [OPTIONS])";
+
+	echo -e "If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the
 	script.";
-else 	
-	default_job "${@:2}";
+    exit;
 fi 
+
+eval "youtube-dl $ARGS $2 $EXTRA_ARGS";
