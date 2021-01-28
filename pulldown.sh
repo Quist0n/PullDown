@@ -5,7 +5,7 @@ MODE=$1
 NAME="pulldown.sh"
 OUTPUT_FORMAT_PLAYLIST="\%\(autonumber\)s-\%\(title\)s.\%\(ext\)s"
 OUTPUT_FORMAT_NORMAL="\%\(title\)s.\%\(ext\)s"
-ARGS="-v --add-metadata "
+ARGS="-v "
 EXTRA_ARGS="${@:3}"
 
 if [ "$MODE" == "--normal" ] || [[ "$MODE" == "-"*"n"* ]];
@@ -28,6 +28,10 @@ if [ "$MODE" == "--audio" ] || [[ "$MODE" == "-"*"a"* ]];
     ARGS="${ARGS} -x ";
 fi
 
+if [ "$MODE" == "--metadata" ] || [[ "$MODE" == "-"*"m"* ]];
+    then
+    ARGS="${ARGS} --add-metadata "
+fi
 if [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
 	then
     echo -e "PullDown $VERSION";
@@ -44,9 +48,11 @@ if [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
 	echo -e "-a | --audio\n\tDownloads audio only.";
     echo -e "(e.g $NAME -a URL [OPTIONS])"
 
-	echo -e "-s | --hls |--native-hls\n\tDownloads the file with the youtube-dl native HLS downloader";
+	echo -e "-s | --hls | --native-hls\n\tDownloads the file with the youtube-dl native HLS downloader";
 	echo -e "(e.g $NAME -s URL [OPTIONS])";
 
+    echo -e "-m | --metadata\n\tAdd metadata to the file";
+    echo -e "(e.g $NAME -m URL [OPTIONS])";
 	echo -e "If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the
 	script.";
     exit;
