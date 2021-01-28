@@ -1,12 +1,12 @@
 #!/bin/bash
 
-VERSION=0.7
+VERSION=0.7.1
 MODE=$1
 NAME="pulldown.sh"
 OUTPUT_FORMAT_PLAYLIST="\%\(autonumber\)s-\%\(title\)s.\%\(ext\)s"
 OUTPUT_FORMAT_NORMAL="\%\(title\)s.\%\(ext\)s"
 ARGS="-v --add-metadata "
-EXTRA_ARGS="$3"
+EXTRA_ARGS="${@:3}"
 
 if [ "$MODE" == "--normal" ] || [[ "$MODE" == "-"*"n"* ]];
 	then
