@@ -1,61 +1,67 @@
 #!/bin/bash
 
-VERSION=0.7.2
-MODE=$1
-NAME="pulldown.sh"
-OUTPUT_FORMAT_PLAYLIST="\%\(autonumber\)s-\%\(title\)s.\%\(ext\)s"
-OUTPUT_FORMAT_NORMAL="\%\(title\)s.\%\(ext\)s"
-ARGS="-v "
-EXTRA_ARGS="${@:3}"
+VERSION=0.8.0
+NAME='pulldown.sh'
+OUTPUT_FORMAT_PLAYLIST='%(autonumber)s-%(title)s.%(ext)s'
+OUTPUT_FORMAT_NORMAL='%(title)s.%(ext)s'
+#Some default flags to pass no matter what
+ARGS="-v"
+URLS=""
+YTDL_ARGS=""
 
-if [ "$MODE" == "--normal" ] || [[ "$MODE" == "-"*"n"* ]];
-	then
-    ARGS="${ARGS} -o $OUTPUT_FORMAT_NORMAL"; 
+usage()
+{
+        while read; do
+                printf "%s\n" "$REPLY"
+        done <<-EOF
+Usage : $NAME [MODE] URL [OPTIONS]
+Modes:
+        -n | --normal
+        Downloads file giving the file its name via the template '$OUTPUT_FORMAT_NORMAL'
+        (e.g $NAME -n  [URL] [OPTIONS])
+
+        -p | --playlist
+        Downloads a youtube playlist or other playlist supported by youtube-dl to current working directory using template '$OUTPUT_FORMAT_PLAYLIST'
+        (e.g $NAME -p URL [OPTIONS])
+
+        -a | --audio
+        Downloads audio only.
+        (e.g $NAME -a URL [OPTIONS])
+
+        -s | --hls | --native-hls
+        Downloads the file with the youtube-dl native HLS downloader
+        (e.g $NAME -s URL [OPTIONS])
+
+        -m | --metadata
+        Add metadata to the file
+        (e.g $NAME -m URL [OPTIONS])
+        If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the script.
+EOF
+}
+while [ "$1" ]; do
+        case "$1" in
+                --normal | -n)
+                        ARGS="${ARGS} -o '$OUTPUT_FORMAT_NORMAL' " ;;
+                --hls | -s)
+                        ARGS="${ARGS} --hls-prefer-native " ;;
+                --playlist | -p)
+                        ARGS="${ARGS} -o '$OUTPUT_FORMAT_PLAYLIST' " ;;
+                --audio | -a)
+                        ARGS="${ARGS} -x " ;;
+                --metadata | -m)
+                        ARGS="${ARGS} --add-metadata " ;;
+                --help | -h)
+                         usage; exit ;;
+                http*://*)
+                        URLS="${URLS} $1" ;;
+                *)
+                        YTDL_ARGS="${YTDL_ARGS} $1" ;;
+        esac
+        shift
+done
+
+if [ -z $URLS ]; then
+        printf "Please specify a url to act upon (E.g https://example.com/video.mp4)\n"; exit 1
+else
+        youtube-dl $ARGS $URLS $YTDL_ARGS;
 fi
-
-if [ "$MODE" == "--native-hls" ] || [[ "$MODE" == "-"*"s"* ]] || [ "$MODE" == "--hls" ];
-	then
-    ARGS="${ARGS} --hls-prefer-native ";
-fi
-
-if [ "$MODE" == "--playlist" ] || [[ "$MODE" == "-p"* ]] || [[ "$MODE" == *"p" ]];
-	then 
-    ARGS="${ARGS} -o $OUTPUT_FORMAT_PLAYLIST ";
-fi
-
-if [ "$MODE" == "--audio" ] || [[ "$MODE" == "-"*"a"* ]];
-    then
-    ARGS="${ARGS} -x ";
-fi
-
-if [ "$MODE" == "--metadata" ] || [[ "$MODE" == "-"*"m"* ]];
-    then
-    ARGS="${ARGS} --add-metadata "
-fi
-if [ "$MODE" == "--help" ] || [ "$MODE" == "-h" ];
-	then
-    echo -e "PullDown $VERSION";
-	echo -e "Usage : $NAME [MODE] URL [OPTIONS]";
-
-	echo -e "Modes:";
-
-	echo -e "-n | --normal\n\tDownloads file giving the file its name via the template $OUTPUT_FORMAT_NORMAL variable";
-	echo -e "(e.g $NAME -n  [URL] [OPTIONS])";
-
-	echo -e "-p | --playlist\n\tDownloads a youtube playlist or other playlist supported by youtube-dl to current working directory using template $OUTPUT_FORMAT_PLAYLIST";
-	echo -e "(e.g $NAME -p URL [OPTIONS])";
-
-	echo -e "-a | --audio\n\tDownloads audio only.";
-    echo -e "(e.g $NAME -a URL [OPTIONS])"
-
-	echo -e "-s | --hls | --native-hls\n\tDownloads the file with the youtube-dl native HLS downloader";
-	echo -e "(e.g $NAME -s URL [OPTIONS])";
-
-    echo -e "-m | --metadata\n\tAdd metadata to the file";
-    echo -e "(e.g $NAME -m URL [OPTIONS])";
-	echo -e "If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the
-	script.";
-    exit;
-fi 
-
-eval "youtube-dl $ARGS $2 $EXTRA_ARGS";
