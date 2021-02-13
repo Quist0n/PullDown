@@ -53,9 +53,9 @@ while [ "$1" ]; do
                 --help | -h)
                          usage; exit ;;
                 http*://*)
-                        URLS="${URLS} $1" ;;
+                        URLS="${URLS} $1 " ;;
                 *)
-                        YTDL_ARGS="${YTDL_ARGS} $1" ;;
+                        YTDL_ARGS="${YTDL_ARGS} $1 " ;;
         esac
         shift
 done
