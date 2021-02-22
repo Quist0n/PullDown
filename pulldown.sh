@@ -60,7 +60,7 @@ while [ "$1" ]; do
         shift
 done
 
-if [ -z $URLS ]; then
+if [ -z "$URLS" ]; then
         printf "Please specify a url to act upon (E.g https://example.com/video.mp4)\n"; exit 1
 else
         youtube-dl $ARGS $URLS $YTDL_ARGS;
