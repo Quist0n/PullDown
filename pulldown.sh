@@ -41,11 +41,11 @@ EOF
 while [ "$1" ]; do
         case "$1" in
                 --normal | -n)
-                        ARGS="${ARGS} -o '$OUTPUT_FORMAT_NORMAL' " ;;
+                        ARGS="${ARGS} -o "$OUTPUT_FORMAT_NORMAL" " ;;
                 --hls | -s)
                         ARGS="${ARGS} --hls-prefer-native " ;;
                 --playlist | -p)
-                        ARGS="${ARGS} -o '$OUTPUT_FORMAT_PLAYLIST' " ;;
+                        ARGS="${ARGS} -o "$OUTPUT_FORMAT_PLAYLIST" " ;;
                 --audio | -a)
                         ARGS="${ARGS} -x " ;;
                 --metadata | -m)
