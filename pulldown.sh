@@ -11,9 +11,7 @@ YTDL_ARGS=""
 
 usage()
 {
-        while read; do
-                printf "%s\n" "$REPLY"
-        done <<-EOF
+        cat <<- _end_help
 Usage : $NAME [MODE] URL [OPTIONS]
 Modes:
         -n | --normal
@@ -36,7 +34,7 @@ Modes:
         Add metadata to the file
         (e.g $NAME -m URL [OPTIONS])
         If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the script.
-EOF
+_end_help
 }
 while [ "$1" ]; do
         case "$1" in
