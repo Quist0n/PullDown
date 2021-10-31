@@ -1,11 +1,10 @@
 #!/bin/bash
 
-VERSION=0.8.0
+VERSION=0.8.2
 NAME='pulldown.sh'
-OUTPUT_FORMAT_PLAYLIST='%(autonumber)s-%(title)s.%(ext)s'
-OUTPUT_FORMAT_NORMAL='%(title)s.%(ext)s'
+OUTPUT_FORMAT_NORMAL='%(playlist_autonumber)s%-(title)s.%(ext)s'
 #Some default flags to pass no matter what
-ARGS="-v"
+ARGS="-v --restrict-filenames"
 URLS=""
 YTDL_ARGS=""
 
@@ -15,12 +14,8 @@ usage()
 Usage : $NAME [MODE] URL [OPTIONS]
 Modes:
         -n | --normal
-        Downloads file giving the file its name via the template '$OUTPUT_FORMAT_NORMAL'
+        Download using a standard file naming template template '$OUTPUT_FORMAT_NORMAL'
         (e.g $NAME -n  [URL] [OPTIONS])
-
-        -p | --playlist
-        Downloads a youtube playlist or other playlist supported by youtube-dl to current working directory using template '$OUTPUT_FORMAT_PLAYLIST'
-        (e.g $NAME -p URL [OPTIONS])
 
         -a | --audio
         Downloads audio only.
@@ -33,17 +28,16 @@ Modes:
         -m | --metadata
         Add metadata to the file
         (e.g $NAME -m URL [OPTIONS])
+
         If you are having an error in the script with youtube-dl unable to read the url, please surround it in quotes when you invoke the script.
 _end_help
 }
 while [ "$1" ]; do
         case "$1" in
                 --normal | -n)
-                        ARGS="${ARGS} -o "$OUTPUT_FORMAT_NORMAL" " ;;
+                        ARGS="${ARGS} -o $OUTPUT_FORMAT_NORMAL " ;;
                 --hls | -s)
                         ARGS="${ARGS} --hls-prefer-native " ;;
-                --playlist | -p)
-                        ARGS="${ARGS} -o "$OUTPUT_FORMAT_PLAYLIST" " ;;
                 --audio | -a)
                         ARGS="${ARGS} -x " ;;
                 --metadata | -m)
