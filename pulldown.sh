@@ -1,8 +1,9 @@
 #!/bin/bash
 
-VERSION=0.8.2
+VERSION=0.8.3
 NAME='pulldown.sh'
-OUTPUT_FORMAT_NORMAL='%(playlist_autonumber)s%-(title)s.%(ext)s'
+OUTPUT_FORMAT_NORMAL='%(title)s.%(ext)s'
+OUTPUT_FORMAT_PLAYLIST='%(playlist_autonumber)s-%(title)s.%(ext)s'
 #Some default flags to pass no matter what
 ARGS="-v --restrict-filenames"
 URLS=""
@@ -16,6 +17,10 @@ Modes:
         -n | --normal
         Download using a standard file naming template template '$OUTPUT_FORMAT_NORMAL'
         (e.g $NAME -n  [URL] [OPTIONS])
+
+        -p | --playlist
+        Download playlists using the output template '$OUTPUT_FORMAT_PLAYLIST'
+        (e.g $NAME -p  [URL] [OPTIONS])
 
         -a | --audio
         Downloads audio only.
@@ -35,7 +40,9 @@ _end_help
 while [ "$1" ]; do
         case "$1" in
                 --normal | -n)
-                        ARGS="${ARGS} -o $OUTPUT_FORMAT_NORMAL " ;;
+                        ARGS="${ARGS} -o "$OUTPUT_FORMAT_NORMAL" " ;;
+                --playlist | -p)
+                        ARGS="${ARGS} -o "$OUTPUT_FORMAT_PLAYLIST" " ;;
                 --hls | -s)
                         ARGS="${ARGS} --hls-prefer-native " ;;
                 --audio | -a)
