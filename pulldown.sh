@@ -1,5 +1,5 @@
 #!/bin/bash
-
+YTDL="/usr/bin/youtube-dl"
 VERSION=0.8.3
 NAME='pulldown.sh'
 OUTPUT_FORMAT_NORMAL='%(title)s.%(ext)s'
@@ -62,5 +62,5 @@ done
 if [ -z "$URLS" ]; then
         printf "Please specify a url to act upon (E.g https://example.com/video.mp4)\n"; exit 1
 else
-        youtube-dl $ARGS $URLS $YTDL_ARGS;
+        $YTDL $ARGS $URLS $YTDL_ARGS;
 fi
