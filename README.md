@@ -1,5 +1,5 @@
 # Pulldown
-Bash script using youtube-dl to download remote files.
+Bash script to make it easier to use youtube-dl or youtube-dl forks.
 
 # Usage:
         --help | -h ) Prints out the basic help
@@ -23,5 +23,5 @@ Bash script using youtube-dl to download remote files.
 
 # NOTICE
 
-Currently specifying option as a single flag (e.g -ams ) does not work
+Currently specifying options as a single flag (e.g -ams ) does not work
 and each option must be specified seperately (e.g -a -m -s)
