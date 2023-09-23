@@ -1,6 +1,6 @@
 #!/bin/bash
-YTDL="/usr/bin/youtube-dl"
-VERSION=0.8.4
+YTDL="/bin/yt-dlp"
+VERSION=0.8.6
 NAME='pulldown.sh'
 OUTPUT_FORMAT_NORMAL='%(title)s.%(ext)s'
 OUTPUT_FORMAT_PLAYLIST='%(playlist_autonumber)s-%(title)s.%(ext)s'
